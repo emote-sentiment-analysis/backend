@@ -1,0 +1,115 @@
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<title>Sentiment Analysis</title>
+
+<style>
+    .outer {
+        width: 100%;
+        text-align: center;
+    }
+
+    .title {
+        margin-top: 20px;
+    }
+
+    .content {
+        margin-top: 30px;
+        width: 90%;
+        height: 80%;
+        text-align: center;
+        font-size: 1.5rem;
+        border: none;
+        border-color: Transparent;
+        outline: none;
+        resize: none;
+        overflow: hidden;
+    }
+
+    .sentiment {
+        position: fixed;
+        bottom: 50px;
+        height: 20px;
+        left: calc(-50vw + 50%);
+        right: calc(-50vw + 50%);
+        width: 90%;
+        background-image: linear-gradient(to right, red, yellow, green);
+        margin: auto;
+        border-radius: 10px;
+    }
+
+    .marker {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        background-color: #4f4f4f;
+        position: fixed;
+        bottom: 40px;
+    }
+</style>
+
+<div class="outer">
+    <h1 class="title">Sentiment Analysis</h1>
+    <p>Alex, James, Will</p>
+    <textarea oninput="this.style.height = '';this.style.height = this.scrollHeight + 'px'"
+    class="content" placeholder="Type here..." onclick="$(this).attr('placeholder','')"></textarea>
+</div>
+
+<div class="sentiment"></div>
+<div class="marker"></div>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script>
+    var last_value = 0
+
+
+    function calculate() {
+
+     $.post($SCRIPT_ROOT  + '/score', {
+        content: $('.content').val()
+
+      }, function(resp) {
+        console.log(resp.score)
+            update(resp.score)
+        console.log(resp.bad)
+         console.log(resp.good)
+      }, 'json');
+      return false;
+    };
+
+
+
+
+
+    function calc_posn(value) {
+        var width = $('.sentiment').outerWidth()
+        var page = window.innerWidth
+
+        var slider = (value + 1) / 2 * width
+        var offset = (page - width) / 2
+        var posn = offset + slider - 20
+
+        return posn
+    }
+
+    function update(value) {
+        last_value = value
+        var posn = calc_posn(value)
+
+        $('.marker').stop()
+        $('.marker').animate({'left': posn}, 1000)
+    }
+
+    function hard_update() {
+        var posn = calc_posn(last_value)
+
+        $('.marker').css('left', posn)
+    }
+
+    $(window).resize(hard_update)
+
+    $('.content').keyup(calculate)
+
+    $(hard_update)
+</script>

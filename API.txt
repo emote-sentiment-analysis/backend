@@ -1,0 +1,45 @@
+### /score ###
+
+POST: 
+
+content: A string of text
+
+Returns: {
+      'score': avg,
+      'good': good,
+      'bad': bad
+    }
+
+When score is the sentiment from -1 to 1, good is a list of positive words/phrases, and bad is a list of negative words/phrases
+
+
+### /finalScore ###
+
+POST: 
+
+content: A string of text
+
+Returns: {
+      'rating': sentiment,
+      'scores': confidenceScores,
+      'sentences': sentences
+}
+
+Where the rating is a qualitative rating: negative, mixed, neutral, or positive
+    ex. 'rating': 'mixed'
+
+Scores is a JSON Object:
+    ex. 'scores': {'negative': 0.67, 'neutral': 0.0, 'positive': 0.33}
+
+And sentences is a list containing JSON objects
+  ex. 'sentences': [
+    
+    {'scores': {'negative': 1.0, 'neutral': 0.0, 'positive': 0.0},
+    'sentiment': 'negative',
+    'text': 'I am torn on the new XBOX.'},
+
+    {'scores': {'negative': 1.0, 'neutral': 0.0, 'positive': 0.0},
+    'sentiment': 'negative',
+    'text': 'It has clean, pretty lines, but it will not connect to the internet, making it useless.'}
+
+  ]
