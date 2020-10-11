@@ -18,7 +18,7 @@ def index():
 def score():
     if request.method == "POST":
 
-        content = request.form['content']
+        content = request.json['content']
         avg, good, bad = score_text(content)
 
         return jsonify({
@@ -31,11 +31,12 @@ def score():
 @app.route('/finalScore', methods=["GET","POST"])
 def finalScore():
     if request.method == "POST":
-        text = request.form['content']
+        print(request.json)
+        text = request.json['content']
         if(text == session.get('text')):
            return jsonify(Sentiment(session.get('last_response')).getData())
-        subscription_key = "<Key>"
-        endpoint = "<EndPoint>"
+        subscription_key = ""
+        endpoint = ""
         sentiment_url = endpoint + "/text/analytics/v3.0/sentiment"
         documents = {"documents": [
         {"id": "1", "language": "en",
@@ -49,6 +50,4 @@ def finalScore():
         
     return ""
 
-
-
-
+app.run(host='0.0.0.0', port=8000, debug=True)
