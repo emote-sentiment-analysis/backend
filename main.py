@@ -35,8 +35,8 @@ def finalScore():
         text = request.json['content']
         if(text == session.get('text')):
            return jsonify(Sentiment(session.get('last_response')).getData())
-        subscription_key = ""
-        endpoint = ""
+        subscription_key = "4ee901f35e894338ab5dd577bfb29033"
+        endpoint = "https://sentiment-analysis-processing.cognitiveservices.azure.com"
         sentiment_url = endpoint + "/text/analytics/v3.0/sentiment"
         documents = {"documents": [
         {"id": "1", "language": "en",
