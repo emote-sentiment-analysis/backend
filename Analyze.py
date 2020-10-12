@@ -4,8 +4,11 @@ import math
 def hashtags(inp):
   tags = []
   for i in inp:
-    w = word(i)
-    tags.append(w.primary_mood())
+    try:
+      w = word(i)
+      tags.append(w.primary_mood())
+    except:
+      pass
   return tags
 
 def topTags(pos, neg, n):
