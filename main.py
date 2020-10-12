@@ -1,5 +1,6 @@
 from flask import Flask, session, render_template, jsonify, request
 from Analyze import score as score_text
+from Analyze import topTags
 from base64 import b64decode as b64d
 import requests as r
 import json
@@ -28,7 +29,8 @@ def score():
         return jsonify({
             'score': avg,
             'good': good,
-            'bad': bad
+            'bad': bad,
+            'top_tags': topTags(good, bad, 3)
         })
     return False
 

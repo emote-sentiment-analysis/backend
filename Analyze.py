@@ -1,6 +1,24 @@
 from senticnet5 import word
 import math
 
+def hashtags(inp):
+  tags = []
+  for i in inp:
+    w = word(i)
+    tags.append(w.primary_mood())
+  return tags
+
+def topTags(pos, neg, n):
+  tag_count = {}
+  tags = hashtags(pos) + hashtags(neg)
+  for tag in tags:
+    if tag in tag_count:
+      tag_count[tag] +=1
+    else:
+      tag_count[tag] = 1
+
+  return sorted(tag_count, key=tag_count.get, reverse=True)[:n]
+
 def score(inp):
   bad_words = []
   good_words = []
