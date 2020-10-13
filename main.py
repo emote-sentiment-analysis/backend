@@ -43,7 +43,7 @@ def finalScore():
            return jsonify(Sentiment(session.get('last_response')).getData())
         subscription_key = config['subscription_key']
         endpoint = config['endpoint']
-        sentiment_url = endpoint + "/text/analytics/v3.0/sentiment"
+        sentiment_url = endpoint + "/text/analytics/v3.1-preview.1/sentiment?opinionMining=true" #now on 3.1
         documents = {"documents": [
         {"id": "1", "language": "en",
         "text": text},]}

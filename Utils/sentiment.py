@@ -39,6 +39,9 @@ class Sentence:
     self.offset=response['offset']
     self.length = response['length']
     self.text = response['text']
+    self.aspects = response['aspects']
+    self.opinions = response['opinions']
+
   def __str__(self):
      return str(self.response)
   
@@ -47,7 +50,8 @@ class Sentence:
       'sentiment':self.sentiment,
       'scores':self.confidenceScores,
       'text':self.text,
-
+      'aspects':self.aspects,
+      'opinions':self.opinions
     }
 
 
