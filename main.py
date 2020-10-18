@@ -5,7 +5,14 @@ from base64 import b64decode as b64d
 import requests as r
 import json
 from Utils.sentiment import Sentiment
+import logging
 app = Flask(__name__)
+port=8000
+logging.basicConfig(filename='main.log', level=logging.INFO, format='[%(asctime)s] - %(levelname)s: %(message)s')
+werkzeug = logging.getLogger('werkzeug')
+werkzeug.disabled = True
+
+app.logger.info('* Starting server on port ' + str(port) + ' *')
 
 app.secret_key = b'_5#y2gyhsghyttryrthgfjkjutrtqtregdfgdL"F4Q8z\n\asdasdasdas]/'
 
@@ -37,7 +44,6 @@ def score():
 @app.route('/finalScore', methods=["GET","POST"])
 def finalScore():
     if request.method == "POST":
-        print(request.json)
         text = request.json['content']
         if(text == session.get('text')):
            return jsonify(Sentiment(session.get('last_response')).getData())
@@ -52,8 +58,16 @@ def finalScore():
         sentiments = response.json()
         session['text'] = text
         session['last_response'] = sentiments
-        return jsonify(Sentiment(sentiments).getData())
-        
+        res = jsonify(Sentiment(sentiments).getData())
+        return res        
     return ""
 
-app.run(host='0.0.0.0', port=8000)
+@app.after_request
+def after_request(response):
+    if request.json != None and response.json != None:
+        app.logger.info('%s %s %s %s %s\n%s %s', request.remote_addr, request.method, request.scheme, request.full_path, response.status, request.json, response.json)
+    else:
+        app.logger.info('%s %s %s %s %s', request.remote_addr, request.method, request.scheme, request.full_path, response.status)
+    return response
+
+app.run(host='0.0.0.0', port=port, debug=False)
