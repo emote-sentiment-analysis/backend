@@ -56,21 +56,4 @@ def finalScore():
         
     return ""
 
-
-@app.route('/thesaurus', methods=["GET", "POST"])
-def thesaurus():
-    if request.method == "POST":
-        print(request.json)
-        word = request.json['word']
-        api_key = config['thesaurus_key']
-        base  = ""
-        sentiment_url = base + + "/" + api_key +"/" + word + "/json"  # now on 3.1
-
-        response = r.get(sentiment_url)
-        response = response.json()
-
-        return jsonify(response)
-
-    return ""
-
-app.run(host='0.0.0.0', port=8000, debug=True)
+app.run(host='0.0.0.0', port=8000)
