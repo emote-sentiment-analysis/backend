@@ -3,7 +3,7 @@ SentimentAnalysis analyzes the sentiment (positivity or negativity) of a message
 
 The sentiment of a message is estimated as you type by using the Senticnet5 database. The sentiment is displayed on the bar at the bottom of the screen.
 
-However, Senticnet5 is limited because it does not understand context, merely individual words and phrases. So, a better solution is currently being implemented: Azure SentimentAPI. Users will be able to submit their message for analysis (this cannot be conducted in real time because it would rapidly max out allowable API calls to Azure). Particularly positive and negative words will be noted so the user can understand where their score is coming from.
+However, Senticnet5 is limited because it does not understand context, merely individual words and phrases. So, we used the Azure Sentiment API (called after each sentence to limit resource usage). This verifies and corrects the preliminary asessment of the Senticnet database, providing more accurate information.
 
 ## Frontend - React App
 
